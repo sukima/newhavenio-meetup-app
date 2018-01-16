@@ -6,6 +6,7 @@ const logger = require('morgan');
 const meetup = require('./lib/meetup');
 const events = require('./routes/events');
 const members = require('./routes/members');
+const debug = require('debug')('newhavenio-meetup-app:server');
 
 let app = express();
 let meetupApiKey = process.env.MEETUP_KEY;
@@ -36,6 +37,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   Boom.boomify(err);
+  debug(err);
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.output.statusCode);
